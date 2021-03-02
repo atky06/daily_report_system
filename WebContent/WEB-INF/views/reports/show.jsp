@@ -38,7 +38,7 @@
                         <tr>
                             <th>いいね</th>
                             <td>
-                                <c:out value="${report.like_count}" />
+                               <a href="<c:url value='/likes/index?id=${report.id}' />"><c:out value="${report.like_count}" /></a>
                             </td>
                         </tr>
                     </tbody>
@@ -53,9 +53,11 @@
             </c:otherwise>
         </c:choose>
 
-        <c:if test="${sessionScope.login_employee.id != report.employee.id}">
+        <c:if test="${sessionScope.login_employee.id != report.employee.id && likes_count == 0}">
             <p><a href="<c:url value="/reports/like?id=${report.id}" />">この日報をいいねする</a></p>
         </c:if>
+
+
         <p><a href="<c:url value="/reports/index" />">一覧に戻る</a></p>
     </c:param>
 </c:import>
