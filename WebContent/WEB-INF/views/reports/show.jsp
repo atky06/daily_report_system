@@ -57,6 +57,10 @@
             <p><a href="<c:url value="/reports/like?id=${report.id}" />">この日報をいいねする</a></p>
         </c:if>
 
+        <c:if test="${sessionScope.login_employee.id != report.employee.id && follows_count == 0}">
+            <p><a href="<c:url value="/employees/follow?id=${report.employee.id}" />">この日報の作成者をフォローする</a></p>
+        </c:if>
+
 
         <p><a href="<c:url value="/reports/index" />">一覧に戻る</a></p>
     </c:param>
