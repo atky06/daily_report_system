@@ -12,20 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
-import models.Report;
+import models.Follow;
 import utils.DBUtil;
 
 /**
- * Servlet implementation class ReportsFollowIndex
+ * Servlet implementation class MyFollowsIndex
  */
-@WebServlet("/follows/index")
-public class ReportsFollowIndex extends HttpServlet {
+@WebServlet("/myfollows/index")
+public class MyFollowsIndex extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReportsFollowIndex() {
+    public MyFollowsIndex() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,33 +39,31 @@ public class ReportsFollowIndex extends HttpServlet {
         Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");
 
 
-
         int page;
         try{
             page = Integer.parseInt(request.getParameter("page"));
         } catch(Exception e) {
             page = 1;
         }
-        List<Report> follows_reports = em.createNamedQuery("getMyFollowsReports", Report.class)
+        List<Follow> follows = em.createNamedQuery("getMyFollows", Follow.class)
                                   .setParameter("employee", login_employee)
                                   .setFirstResult(15 * (page - 1))
                                   .setMaxResults(15)
                                   .getResultList();
 
-        long follows_reports_count = (long)em.createNamedQuery("getMyFollowsReportsCount", Long.class)
-                                     .setParameter("employee", login_employee)
-                                     .getSingleResult();
+        long follows_count = (long)em.createNamedQuery("getFollowsCount", Long.class)
+                                  .setParameter("employee", login_employee)
+                                  .getSingleResult();
 
         em.close();
 
 
-        request.setAttribute("reports", follows_reports);
-        request.setAttribute("follows_reports_count", follows_reports_count);
+        request.setAttribute("follows", follows);
+        request.setAttribute("follows_count", follows_count);
         request.setAttribute("page", page);
 
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/follows/index.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/myfollows/index.jsp");
         rd.forward(request, response);
-
 
     }
 

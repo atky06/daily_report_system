@@ -18,6 +18,14 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getMyFollowsCount",
             query = "SELECT COUNT(f) FROM Follow AS f WHERE f.employee = :employee AND f.follow = :follow"
+    ),
+    @NamedQuery(
+            name = "getMyFollows",
+            query = "SELECT f FROM Follow AS f WHERE f.employee = :employee ORDER BY f.id DESC"
+    ),
+    @NamedQuery(
+            name = "getFollowsCount",
+            query = "SELECT COUNT(f) FROM Follow AS f WHERE f.employee = :employee"
     )
 })
 @Entity
