@@ -33,13 +33,14 @@ public class ReportsShowServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // データベースに接続
         EntityManager em = DBUtil.createEntityManager();
 
         Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");
 
 
 
-
+        // 該当のID一件のみをデータベースから取得
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
 
         long likes_count = (long)em.createNamedQuery("getMyLikesCount", Long.class)
@@ -52,6 +53,7 @@ public class ReportsShowServlet extends HttpServlet {
                 .setParameter("follow", r.getEmployee())
                 .getSingleResult();
 
+        // 接続の終了
         em.close();
 
 

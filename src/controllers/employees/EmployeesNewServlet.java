@@ -30,7 +30,10 @@ public class EmployeesNewServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // CSRF対策
         request.setAttribute("_token", request.getSession().getId());
+
+        // 入力内容の初期値としてインスタンスを生成
         request.setAttribute("employee", new Employee());
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/new.jsp");

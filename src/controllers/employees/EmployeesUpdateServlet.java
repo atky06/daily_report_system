@@ -40,6 +40,8 @@ public class EmployeesUpdateServlet extends HttpServlet {
         if(_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
 
+            //  セッションスコープから従業員のIDを取得して
+            // 該当のID一件のみをデータベースから取得
             Employee e = em.find(Employee.class, (Integer)(request.getSession().getAttribute("employee_id")));
 
             // 現在の値と異なる社員番号が入力されていたら
@@ -82,6 +84,7 @@ public class EmployeesUpdateServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/edit.jsp");
                 rd.forward(request, response);
             } else {
+                // データベースに保存
                 em.getTransaction().begin();
                 em.getTransaction().commit();
                 em.close();

@@ -40,6 +40,8 @@ public class ReportsUpdateServlet extends HttpServlet {
         if(_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
 
+            // セッションスコープから日報のIDを取得して
+            // 該当のID1件のみをデータベースから取得
             Report r = em.find(Report.class, (Integer)(request.getSession().getAttribute("report_id")));
 
             r.setReport_date(Date.valueOf(request.getParameter("report_date")));
@@ -63,6 +65,7 @@ public class ReportsUpdateServlet extends HttpServlet {
                 em.close();
                 request.getSession().setAttribute("flush", "更新が完了しました。");
 
+                // 不要なデータなので削除
                 request.getSession().removeAttribute("report_id");
 
                 response.sendRedirect(request.getContextPath() + "/reports/index");

@@ -38,6 +38,8 @@ public class ReportsCreateServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String _token = (String)request.getParameter("_token");
+
+        // CSRF対策のチェック
         if(_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
 
@@ -71,6 +73,7 @@ public class ReportsCreateServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/new.jsp");
                 rd.forward(request, response);
             } else {
+                // データベースに保存
                 em.getTransaction().begin();
                 em.persist(r);
                 em.getTransaction().commit();
