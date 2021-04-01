@@ -39,6 +39,7 @@ public class IndexLikesServlet extends HttpServlet {
 
         Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");
 
+        // 該当のID一件のみをデータベースから取得
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
 
 
@@ -48,12 +49,15 @@ public class IndexLikesServlet extends HttpServlet {
         } catch(Exception e) {
             page = 1;
         }
+
+        // 最大件数と開始位置を指定してメッセージを取得
         List<Like> likes = em.createNamedQuery("getMyAllLikes", Like.class)
                                   .setParameter("report", r)
                                    .setFirstResult(15 * (page - 1))
                                   .setMaxResults(15)
                                   .getResultList();
 
+        // いいねしている件数を取得
         long likes_count = (long)em.createNamedQuery("getLikesCount", Long.class)
                                      .setParameter("report", r)
                                      .getSingleResult();

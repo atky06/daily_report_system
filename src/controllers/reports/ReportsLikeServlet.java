@@ -34,8 +34,10 @@ public class ReportsLikeServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // データベースに接続
         EntityManager em = DBUtil.createEntityManager();
 
+        // 該当のID1件のみをデータベースから取得
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
 
         Like l = new Like();
@@ -53,12 +55,12 @@ public class ReportsLikeServlet extends HttpServlet {
         }
 
 
-
+        // データベースに保存
         em.getTransaction().begin();
         em.persist(l);
         em.persist(r);
         em.getTransaction().commit();
-        em.close();
+        em.close();  // 接続の終了
 
         request.getSession().setAttribute("flush", "いいねをしました。");
 

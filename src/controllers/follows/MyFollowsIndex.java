@@ -45,12 +45,14 @@ public class MyFollowsIndex extends HttpServlet {
         } catch(Exception e) {
             page = 1;
         }
+
+        // 最大件数と開始位置を指定してメッセージを取得
         List<Follow> follows = em.createNamedQuery("getMyFollows", Follow.class)
                                   .setParameter("employee", login_employee)
                                   .setFirstResult(15 * (page - 1))
                                   .setMaxResults(15)
                                   .getResultList();
-
+       // フォローしている人の件数を取得
         long follows_count = (long)em.createNamedQuery("getFollowsCount", Long.class)
                                   .setParameter("employee", login_employee)
                                   .getSingleResult();

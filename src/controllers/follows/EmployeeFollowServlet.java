@@ -33,8 +33,10 @@ public class EmployeeFollowServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // データベースに接続
         EntityManager em = DBUtil.createEntityManager();
 
+        // 該当のID1件のみをデータベースから取得
         Employee e = em.find(Employee.class, Integer.parseInt(request.getParameter("id")));
 
         Follow f = new Follow();
@@ -51,11 +53,12 @@ public class EmployeeFollowServlet extends HttpServlet {
             f.setUpdated_at(currentTime);
         }
 
+        // データベースに保存
         em.getTransaction().begin();
         em.persist(f);
         em.persist(e);
         em.getTransaction().commit();
-        em.close();
+        em.close(); // 接続の終了
         request.getSession().setAttribute("flush", "フォローしました");
 
         response.sendRedirect(request.getContextPath() + "/reports/index");
